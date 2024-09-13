@@ -1,0 +1,17 @@
+{
+  "plugins": [
+    {
+      "name": "Media embed",
+      "className": "MediaEmbed",
+      "description": "Adds text to the editor.",
+      "path": "src/mediaembed.js",
+      "uiComponents": [
+        {
+          "name": "mediaEmbedButton",
+          "type": "Button",
+          "iconPath": "theme/icons/ckeditor.svg"
+        }
+      ]
+    }
+  ]
+}
