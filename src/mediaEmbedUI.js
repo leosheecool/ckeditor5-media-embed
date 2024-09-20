@@ -16,14 +16,18 @@ export default class MediaEmbedUI extends Plugin {
 			this.listenTo(button, 'execute', () => {
 				// const selection = editor.model.document.selection;
 				const title = 'What You See Is What You Get';
-				const abbr = 'WYSIWYG';
+				// const abbr = 'WYSIWYG';
 
 				// Change the model to insert the abbreviation.
 				editor.model.change(writer => {
-					editor.model.insertContent(
-						// Create a text node with the abbreviation attribute.
-						writer.createText(abbr, { mediaEmbed: title })
-					);
+					const container = writer.createElement('mediaEmbed', {
+						title,
+						class: 'epp-ckeditor-iframe'
+					});
+					const text = writer.createText(title);
+					writer.append(text, container);
+					// console.log('container', container);
+					editor.model.insertContent(container);
 				});
 			});
 

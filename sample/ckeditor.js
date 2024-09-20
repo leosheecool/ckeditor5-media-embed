@@ -22,7 +22,8 @@ import {
 	MediaEmbed,
 	Paragraph,
 	Table,
-	TableToolbar
+	TableToolbar,
+	SourceEditing
 } from 'ckeditor5';
 
 import EPPMediaEmbed from '../src/mediaEmbed.js';
@@ -55,11 +56,13 @@ ClassicEditor
 			TableToolbar,
 			CodeBlock,
 			Code,
-			Base64UploadAdapter
+			Base64UploadAdapter,
+			SourceEditing
 		],
 		toolbar: [
 			'undo',
 			'redo',
+			'sourceEditing',
 			'|',
 			'EPPmediaEmbedButton',
 			'|',

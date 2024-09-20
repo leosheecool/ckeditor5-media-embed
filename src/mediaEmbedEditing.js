@@ -14,7 +14,12 @@ export default class MediaEmbedEditing extends Plugin {
 
 		// Extend the text node's schema to accept the mediaEmbed attribute.
 		schema.extend('$text', {
-			allowAttributes: ['mediaEmbed', 'mediaEmbedClass', 'mediaEmbedTitle']
+			allowAttributes: ['mediaEmbed', 'title', 'class']
+		});
+
+		schema.register('mediaEmbed', {
+			inheritAllFrom: '$block',
+			allowAttributes: ['mediaEmbedTitle', 'mediaEmbedClass', 'title', 'class']
 		});
 	}
 
@@ -22,22 +27,52 @@ export default class MediaEmbedEditing extends Plugin {
 		// ADDED
 		const conversion = this.editor.conversion;
 
-		// Conversion from a model attribute to a view element.
-		conversion.for('downcast').attributeToElement({
+		conversion.for('downcast').elementToElement({
 			model: 'mediaEmbed',
-			// Callback function provides access to the model attribute value
-			// and the DowncastWriter.
-			view: (modelAttributeValue, conversionApi) => {
-				// console.log('test');
-				const { writer } = conversionApi;
-				// console.log('modelAttributeValue', modelAttributeValue);
-
-				return writer.createAttributeElement('p', {
-					title: modelAttributeValue,
-					class: 'test' // modelAttributeValue.modelAttributeValue.mediaEmbedClass
+			view: (modelElement, { writer }) => {
+				// console.log('modelElement', modelElement);
+				return writer.createContainerElement('div', {
+					class: 'cald_consent_wrapper'
 				});
+				// if (!modelElement.getAttribute('mediaEmbed')) {
+				// 	return;
+				// }
+				// const title = modelElement.getAttribute('title');
+				// const className = modelElement.getAttribute('class');
+
+				// const mainContainer = writer.createContainerElement('div', {
+				// 	class: 'cald_consent_wrapper'
+				// });
+				// const iframeContainer = writer.createContainerElement('div', {
+				// 	class: `${ className } epp-ckeditor-iframe`
+				// });
+
+				// writer.insert(writer.createText(title), iframeContainer);
+				// writer.insert(iframeContainer, mainContainer);
+
+				// console.log('mainContainer', mainContainer);
+
+				// return mainContainer;
 			}
 		});
+
+		// Conversion from a model attribute to a view element.
+		// conversion.for('downcast').attributeToElement({
+		// 	model: 'mediaEmbed',
+		// 	// Callback function provides access to the model attribute value
+		// 	// and the DowncastWriter.
+		// 	view: (modelAttributeValue, conversionApi) => {
+		// 		// console.log('test');
+		// 		const { writer } = conversionApi;
+		// 		console.log('ici');
+		// 		// console.log('modelAttributeValue', modelAttributeValue);
+
+		// 		return writer.createAttributeElement('p', {
+		// 			title: modelAttributeValue,
+		// 			class: 'test e' // modelAttributeValue.modelAttributeValue.mediaEmbedClass
+		// 		});
+		// 	}
+		// });
 
 		// conversion.for('downcast').elementToStructure({
 		// 	model: 'mediaEmbed',
@@ -46,25 +81,17 @@ export default class MediaEmbedEditing extends Plugin {
 		// 	}
 		// })
 
-		conversion.for('upcast').elementToAttribute({
+		conversion.for('upcast').elementToElement({
 			view: {
 				name: 'p',
-				attributes: ['mediaEmbedTitle', 'mediaEmbedClass']
+				attributes: ['title', 'class']
 			},
-			model: {
-				key: 'mediaEmbed',
-				// Callback function provides access to the view element.
-				value: viewElement => {
-					const title = viewElement.getAttribute('mediaEmbedTitle');
-					// const className = viewElement.getAttribute('mediaEmbedClass');
-					// console.log("view element", viewElement);
-
-					return title;
-					// return {
-					// 	title,
-					// 	class: 'test' //className
-					// };
-				}
+			model: (viewElement, { writer: modelWriter }) => {
+				// console.log('viewElement', viewElement);
+				return modelWriter.createElement('mediaEmbed', {
+					mediaEmbed: viewElement.getAttribute('title'),
+					mediaEmbedClass: viewElement.getAttribute('class')
+				});
 			}
 		});
 	}
