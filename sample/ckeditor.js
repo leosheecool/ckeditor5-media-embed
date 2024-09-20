@@ -25,7 +25,7 @@ import {
 	TableToolbar
 } from 'ckeditor5';
 
-import MediaEmbed from '../src/mediaembed.js';
+import EPPMediaEmbed from '../src/mediaEmbed.js';
 
 import 'ckeditor5/ckeditor5.css';
 
@@ -34,7 +34,7 @@ import 'ckeditor5/ckeditor5.css';
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
 		plugins: [
-			MediaEmbed,
+			EPPMediaEmbed,
 			Essentials,
 			Autoformat,
 			BlockQuote,
@@ -61,7 +61,7 @@ ClassicEditor
 			'undo',
 			'redo',
 			'|',
-			'mediaEmbedButton',
+			'EPPmediaEmbedButton',
 			'|',
 			'heading',
 			'|',

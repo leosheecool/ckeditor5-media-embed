@@ -21,16 +21,32 @@ module.exports = {
 		'ckeditor5-rules/require-file-extensions-in-imports': [
 			'error',
 			{
-				extensions: [ '.ts', '.js', '.json' ]
+				extensions: ['.ts', '.js', '.json']
 			}
 		]
 	},
 	overrides: [
 		{
-			files: [ 'tests/**/*.js', 'sample/**/*.js' ],
+			files: ['tests/**/*.js', 'sample/**/*.js'],
 			rules: {
 				// Imports CKEditor 5 packages in test files are not checked.
 				'ckeditor5-rules/ckeditor-imports': 'off'
+			}
+		},
+		{
+			files: ['src/**/*.js'],
+			rules: {
+				// Allow usage of `console.log` in source files.
+				'no-console': 'off'
+			}
+		},
+		{
+			files: ['*.js'],
+			rules: {
+				'ckeditor5-rules/ckeditor-imports': 'off',
+				'space-before-function-paren': 'off',
+				'space-in-parens': 'off',
+				'array-bracket-spacing': 'off'
 			}
 		}
 	]
