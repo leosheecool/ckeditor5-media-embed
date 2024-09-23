@@ -32,7 +32,7 @@ export default class MediaEmbedEditing extends Plugin {
 			view: (modelElement, { writer }) => {
 				// console.log('modelElement', modelElement);
 				return writer.createContainerElement('div', {
-					class: 'cald_consent_wrapper'
+					class: 'cald_consent_wrapper ' + modelElement.getAttribute('class')
 				});
 				// if (!modelElement.getAttribute('mediaEmbed')) {
 				// 	return;
