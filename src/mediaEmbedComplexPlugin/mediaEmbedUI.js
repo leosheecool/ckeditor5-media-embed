@@ -41,31 +41,19 @@ export default class MediaEmbedUI extends Plugin {
 		const formView = new FormView(editor.locale);
 
 		this.listenTo(formView, 'submit', () => {
-			const title = formView.titleInputView.fieldView.element.value;
 			const iframe = formView.iframeInputView.fieldView.element.value?.trim();
 			const socialMedia = mediaEmbedValidation(iframe);
 
 			if (!socialMedia) {
 				formView.iframeInputView.errorText = 'Invalid embed code';
-			}
-			formView.titleInputView.errorText = !title ? 'Title cannot be empty' : undefined;
-
-			if (formView.titleInputView.errorText || formView.iframeInputView.errorText) {
 				return;
 			}
 
 			editor.model.change(writer => {
-				// const container = writer.createElement('mediaEmbed', {
-				// 	title,
-				// 	class: 'epp-ckeditor-iframe',
-				// 	iframeRawHtml: iframe,
-				// 	socialMedia
-				// });
 				const container = writer.createElement('rawHtml', {
-					value: iframe
+					value: iframe,
+					socialMedia
 				});
-				// const text = writer.createText(title);
-				// writer.append(text, container);
 				editor.model.insertContent(container);
 			});
 
@@ -115,7 +103,6 @@ export default class MediaEmbedUI extends Plugin {
 
 	_hideUI() {
 		this.formView.iframeInputView.fieldView.value = '';
-		this.formView.titleInputView.fieldView.value = '';
 		this.formView.element.reset();
 
 		this._balloon.remove(this.formView);

@@ -1,7 +1,6 @@
 import {
 	View,
 	LabeledFieldView,
-	// createLabeledInputText,
 	ButtonView,
 	icons,
 	submitHandler,
@@ -12,7 +11,6 @@ export default class FormView extends View {
 	constructor(locale) {
 		super(locale);
 
-		this.titleInputView = this._createInput('Add title');
 		this.iframeInputView = this._createInput('Iframe HTML');
 
 		// Create the save and cancel buttons.
@@ -35,7 +33,6 @@ export default class FormView extends View {
 		this.cancelButtonView.delegate('execute').to(this, 'cancel');
 
 		this.childViews = this.createCollection([
-			this.titleInputView,
 			this.iframeInputView,
 			this.saveButtonView,
 			this.cancelButtonView

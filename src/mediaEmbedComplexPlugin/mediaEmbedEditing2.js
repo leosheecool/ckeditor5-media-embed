@@ -5,11 +5,20 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 	// 	this._defineSchema();
 	// 	this._defineConverters();
 	// }
+	localInit() {
+		const editor = this.editor;
+		const schema = editor.model.schema;
+		schema.extend('rawHtml', {
+			allowAttributes: ['value', 'socialMedia']
+		});
+		// this._setupConversion();
+	}
 
 	/**
 	 * Prepares converters for the feature.
 	 */
 	_setupConversion() {
+		this.localInit();
 		const editor = this.editor;
 		const t = editor.t;
 		// const view = editor.editing.view;
@@ -52,15 +61,82 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 		editor.conversion.for('dataDowncast').elementToElement({
 			model: 'rawHtml',
 			view: (modelElement, { writer }) => {
-				return writer.createRawElement(
+				const socialMedia = modelElement.getAttribute('socialMedia');
+
+				const definitionContainer = writer.createRawElement('script', {
+					'cald-gdpr': 'definition',
+					'type': 'text/plain'
+				}, element => {
+					element.innerHTML = JSON.stringify({
+						vendor_id: socialMedia.vendorId,
+						tag: 'div'
+					});
+				});
+
+				// Consent part
+				const iframeContainer = writer.createRawElement(
 					'div',
-					{ class: 'raw-html-embed' },
+					{ class: socialMedia.classes },
 					function (domElement) {
-						domElement.innerHTML = modelElement.getAttribute('value') || '';
+						domElement.innerHTML = modelElement.getAttribute('value')
+							.replace('<script', '<custom_script')
+							.replace('</script>', '</custom_script>') || '';
 					}
 				);
+				const consentContainer = writer.createContainerElement('script', {
+					'cald-gdpr': 'consent',
+					type: 'text/plain',
+					class: 'consent-content'
+				}, [iframeContainer]);
+
+				// No Consent part
+				const placeholderImage = writer.createEmptyElement('img', {
+					src: socialMedia.image,
+					alt: t('Placeholder image'),
+					class: 'consent-image-placeholder',
+					style: 'width: 100%; height: 56.15%'
+				});
+
+				const noConsentOverlay = writer.createContainerElement('div', {
+					class: 'no-consent-overlay'
+				}, [
+					writer.createContainerElement('div', {
+						class: 'overlay-wrapper'
+					}, [
+						writer.createRawElement('p', {}, e => { e.innerHTML = socialMedia.missingConsentText; }),
+						writer.createContainerElement('div', {
+							class: 'no-consent-link-to-cmp'
+						}, [
+							writer.createRawElement('a', {
+								href: '#',
+								class: 'epp-prevent-link link-to-cmp btn-solid-md'
+							}, element => {
+								element.innerHTML = 'Change my consent settings';
+							})
+						])
+					])
+				]);
+
+				const noConsentContainer = writer.createContainerElement('script', {
+					'cald-gdpr': 'no-consent',
+					type: 'text/plain'
+				}, [
+					placeholderImage,
+					noConsentOverlay
+				]);
+
+				const container = writer.createContainerElement('div', {
+					class: 'cald_consent_wrapper'
+				}, [
+					// iframeContainer,
+					definitionContainer,
+					consentContainer,
+					noConsentContainer
+				]);
+				return container;
 			}
 		});
+
 		editor.conversion.for('editingDowncast').elementToStructure({
 			model: { name: 'rawHtml', attributes: ['value'] },
 			view: (modelElement, { writer }) => {
