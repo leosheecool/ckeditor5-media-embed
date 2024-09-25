@@ -1,20 +1,19 @@
 import {
 	View,
 	LabeledFieldView,
-	createLabeledInputText,
+	// createLabeledInputText,
 	ButtonView,
 	icons,
-	submitHandler
+	submitHandler,
+	createLabeledTextarea
 } from 'ckeditor5';
 
 export default class FormView extends View {
 	constructor(locale) {
 		super(locale);
 
-		// console.log('FormView#constructor() got called');
-
-		this.linkInputView = this._createInput('Add link');
 		this.titleInputView = this._createInput('Add title');
+		this.iframeInputView = this._createInput('Iframe HTML');
 
 		// Create the save and cancel buttons.
 		this.saveButtonView = this._createButton(
@@ -36,8 +35,8 @@ export default class FormView extends View {
 		this.cancelButtonView.delegate('execute').to(this, 'cancel');
 
 		this.childViews = this.createCollection([
-			this.linkInputView,
 			this.titleInputView,
+			this.iframeInputView,
 			this.saveButtonView,
 			this.cancelButtonView
 		]);
@@ -69,7 +68,7 @@ export default class FormView extends View {
 	_createInput(label) {
 		const labeledInput = new LabeledFieldView(
 			this.locale,
-			createLabeledInputText
+			createLabeledTextarea
 		);
 
 		labeledInput.label = label;

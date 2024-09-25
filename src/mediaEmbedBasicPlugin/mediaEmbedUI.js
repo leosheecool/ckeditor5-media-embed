@@ -5,7 +5,7 @@ import {
 	clickOutsideHandler
 } from 'ckeditor5';
 import FormView from './mediaEmbedView.js';
-import './styles.css';
+import './styles/styles.css';
 
 export default class MediaEmbedUI extends Plugin {
 	static get requires() {
@@ -62,6 +62,12 @@ export default class MediaEmbedUI extends Plugin {
 		this.listenTo(formView, 'submit', () => {
 			const title = formView.titleInputView.fieldView.element.value;
 			const link = formView.linkInputView.fieldView.element.value;
+
+			formView.titleInputView.errorText = !title ? 'Title cannot be empty' : '';
+
+			if (formView.titleInputView.errorText) {
+				return;
+			}
 
 			editor.model.change(writer => {
 				const container = writer.createElement('mediaEmbed', {

@@ -23,10 +23,13 @@ import {
 	Paragraph,
 	Table,
 	TableToolbar,
-	SourceEditing
+	SourceEditing,
+	GeneralHtmlSupport,
+	HtmlEmbed
+	// ScriptElementSupport
 } from 'ckeditor5';
 
-import EPPMediaEmbed from '../src/mediaEmbed.js';
+import EPPMediaEmbed from '../src/mediaEmbedComplexPlugin/mediaembed.js';
 
 import 'ckeditor5/ckeditor5.css';
 
@@ -57,7 +60,10 @@ ClassicEditor
 			CodeBlock,
 			Code,
 			Base64UploadAdapter,
-			SourceEditing
+			SourceEditing,
+			GeneralHtmlSupport,
+			HtmlEmbed
+			// ScriptElementSupport
 		],
 		toolbar: [
 			'undo',
@@ -66,6 +72,7 @@ ClassicEditor
 			'|',
 			'EPPmediaEmbedButton',
 			'|',
+			'htmlEmbed',
 			'heading',
 			'|',
 			'bold',
@@ -99,7 +106,23 @@ ClassicEditor
 				'tableRow',
 				'mergeTableCells'
 			]
+		},
+		htmlSupport: {
+			allow: [
+				{
+					name: 'iframe',
+					attributes: [ 'src', 'frameborder', 'allowfullscreen', 'allow', 'class' ]
+				},
+				{
+					name: 'script',
+					attributes: [ 'src', 'type', 'charset', 'async', 'defer' ]
+				}
+			]
+		},
+		htmlEmbed: {
+			showPreviews: true
 		}
+
 	} )
 	.then( editor => {
 		window.editor = editor;

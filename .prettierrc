@@ -4,5 +4,6 @@
   "bracketSpacing": true,
   "endOfLine": "lf",
   "trailingComma": "none",
-  "singleQuote": true
+  "singleQuote": true,
+  "arrowParens": "avoid"
 }
