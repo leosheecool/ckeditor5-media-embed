@@ -79,6 +79,21 @@ export default class MediaEmbedEditing extends Plugin {
 	_defineConverters() {
 		const conversion = this.editor.conversion;
 
+		conversion.for('dataDowncast').elementToElement({
+			model: 'mediaEmbed',
+			view: (modelElement, { writer }) => {
+				// console.log('modelElement', modelElement);
+				// const socialMedia = modelElement.getAttribute('socialMedia');
+
+				return writer.createRawElement('div', {
+					value: modelElement.getAttribute('iframeRawHtml')
+				},
+				el => {
+					el.innerHTML = '<p>test</p>';
+				});
+			}
+		});
+
 		conversion.for('downcast').elementToElement({
 			model: 'mediaEmbed',
 			view: (modelElement, { writer }) => {

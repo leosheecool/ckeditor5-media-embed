@@ -55,14 +55,17 @@ export default class MediaEmbedUI extends Plugin {
 			}
 
 			editor.model.change(writer => {
-				const container = writer.createElement('mediaEmbed', {
-					title,
-					class: 'epp-ckeditor-iframe',
-					iframeRawHtml: iframe,
-					socialMedia
+				// const container = writer.createElement('mediaEmbed', {
+				// 	title,
+				// 	class: 'epp-ckeditor-iframe',
+				// 	iframeRawHtml: iframe,
+				// 	socialMedia
+				// });
+				const container = writer.createElement('rawHtml', {
+					value: iframe
 				});
-				const text = writer.createText(title);
-				writer.append(text, container);
+				// const text = writer.createText(title);
+				// writer.append(text, container);
 				editor.model.insertContent(container);
 			});
 

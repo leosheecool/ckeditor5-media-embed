@@ -1,6 +1,6 @@
 // abbreviation/abbreviation.js
 
-import MediaEmbedEditing from './mediaEmbedEditing.js';
+import MediaEmbedEditing from './mediaEmbedEditing2.js';
 import MediaEmbedUI from './MediaEmbedUI.js';
 import { Plugin } from 'ckeditor5';
 
