@@ -1,6 +1,6 @@
 import { createElement, HtmlEmbedEditing, toWidget } from 'ckeditor5';
 
-export default class MediaEmbedEditing extends HtmlEmbedEditing {
+export default class YoutubeEmbedEditing extends HtmlEmbedEditing {
 	// init() {
 	// 	this._defineSchema();
 	// 	this._defineConverters();
@@ -17,7 +17,7 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 	/**
 	 * Prepares converters for the feature.
 	 */
-	_setupConversion() {
+	_setupConversionde() {
 		this.localInit();
 		const editor = this.editor;
 		const t = editor.t;
@@ -43,12 +43,12 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 		// as a view element's custom property while data upcasting.
 		editor.data.registerRawContentMatcher({
 			name: 'div',
-			classes: 'raw-html-embed'
+			classes: 'raw-html-embed youtube-embed'
 		});
 		editor.conversion.for('upcast').elementToElement({
 			view: {
 				name: 'div',
-				classes: 'raw-html-embed'
+				classes: 'raw-html-embed youtube-embed'
 			},
 			model: (viewElement, { writer }) => {
 				// The div.raw-html-embed is registered as a raw content element,

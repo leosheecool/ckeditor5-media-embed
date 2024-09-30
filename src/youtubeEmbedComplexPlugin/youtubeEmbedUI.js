@@ -4,47 +4,29 @@ import {
 	Plugin,
 	clickOutsideHandler
 } from 'ckeditor5';
-import FormView from './mediaEmbedView.js';
+import FormView from './youtubeEmbedView.js';
 import './styles/styles.css';
+import youtubeEmbedValidation from './utils/youtubeEmbedValidation.js';
 
-export default class MediaEmbedUI extends Plugin {
+export default class YouubeEmbedUI extends Plugin {
 	static get requires() {
 		return [ContextualBalloon];
 	}
 
-	init() {
+	initd() {
 		// eslint-disable-next-line no-undef
-		console.log('MediaEmbedUI#init() got called');
 		const editor = this.editor;
 
 		// Create the balloon and the form view.
 		this._balloon = this.editor.plugins.get(ContextualBalloon);
-		this.formView = this._createFormView();
+		// this.formView = this._createFormView();
 
-		editor.ui.componentFactory.add('EPPmediaEmbedButton', () => {
+		editor.ui.componentFactory.add('EPPYoutubeEmbedButton', () => {
 			const button = new ButtonView();
 
 			button.label = 'Media embed';
 			button.tooltip = true;
 			button.withText = true;
-
-			// this.listenTo(button, 'execute', () => {
-			// 	// const selection = editor.model.document.selection;
-			// 	const title = 'What You See Is What You Get';
-			// 	// const abbr = 'WYSIWYG';
-
-			// 	// Change the model to insert the abbreviation.
-			// 	editor.model.change((writer) => {
-			// 		const container = writer.createElement('mediaEmbed', {
-			// 			title,
-			// 			class: 'epp-ckeditor-iframe'
-			// 		});
-			// 		const text = writer.createText(title);
-			// 		writer.append(text, container);
-			// 		// console.log('container', container);
-			// 		editor.model.insertContent(container);
-			// 	});
-			// });
 
 			this.listenTo(button, 'execute', () => {
 				this._showUI();
@@ -55,32 +37,24 @@ export default class MediaEmbedUI extends Plugin {
 	}
 
 	_createFormView() {
-		// console.log('MediaEmbedUI#_createFormView() got called');
 		const editor = this.editor;
 		const formView = new FormView(editor.locale);
 
 		this.listenTo(formView, 'submit', () => {
-			const title = formView.titleInputView.fieldView.element.value;
-			const link = formView.linkInputView.fieldView.element.value;
+			const iframe = formView.iframeInputView.fieldView.element.value?.trim();
+			const socialMedia = youtubeEmbedValidation(iframe);
 
-			formView.titleInputView.errorText = !title ? 'Title cannot be empty' : '';
-
-			if (formView.titleInputView.errorText) {
+			if (!socialMedia) {
+				formView.iframeInputView.errorText = 'Invalid embed code';
 				return;
 			}
 
 			editor.model.change(writer => {
-				const container = writer.createElement('mediaEmbed', {
-					title,
-					class: 'epp-ckeditor-iframe ' + link
+				const container = writer.createElement('rawHtml', {
+					value: iframe,
+					socialMedia
 				});
-				const text = writer.createText(title);
-				writer.append(text, container);
-				// console.log('container', container);
 				editor.model.insertContent(container);
-				// editor.model.insertContent(
-				// 	writer.createText(abbr, { abbreviation: title })
-				// );
 			});
 
 			this._hideUI();
@@ -128,8 +102,7 @@ export default class MediaEmbedUI extends Plugin {
 	}
 
 	_hideUI() {
-		this.formView.linkInputView.fieldView.value = '';
-		this.formView.titleInputView.fieldView.value = '';
+		this.formView.iframeInputView.fieldView.value = '';
 		this.formView.element.reset();
 
 		this._balloon.remove(this.formView);

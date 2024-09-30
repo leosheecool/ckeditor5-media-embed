@@ -30,15 +30,21 @@ import {
 	// ScriptElementSupport
 } from 'ckeditor5';
 
-import EPPMediaEmbed from '../src/mediaEmbedComplexPlugin/mediaembed.js';
-
 import 'ckeditor5/ckeditor5.css';
+import {
+	EPPMediaEmbed,
+	EPPCopyCitation
+	// EPPYoutubeEmbed
+} from '../src/index.js';
+// import { EPPYoutubeEmbed, EPPMediaEmbed } from '../src/index.js';
 
 /* global document, window */
 
 ClassicEditor.create(document.querySelector('#editor'), {
 	plugins: [
 		EPPMediaEmbed,
+		EPPCopyCitation,
+		// EPPYoutubeEmbed,
 		Essentials,
 		Autoformat,
 		BlockQuote,
@@ -71,6 +77,8 @@ ClassicEditor.create(document.querySelector('#editor'), {
 		'sourceEditing',
 		'|',
 		'EPPmediaEmbedButton',
+		'EPPCopyCitation',
+		'EPPYoutubeEmbedButton',
 		'|',
 		'htmlEmbed',
 		'heading',

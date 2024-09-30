@@ -1,15 +1,14 @@
 import { ALLOWED_SOCIAL_MEDIAS } from './constants.js';
 
-const mediaEmbedValidation = embedCode => {
+const youtubeEmbedValidation = embedCode => {
 	const socialMedia = ALLOWED_SOCIAL_MEDIAS.find(regex => {
 		return regex.regex.test(embedCode);
 	});
 
 	if (!socialMedia) {
-		// alert('Invalid embed code');
 		return false;
 	}
-	return true;
+	return socialMedia;
 };
 
-export default mediaEmbedValidation;
+export default youtubeEmbedValidation;
