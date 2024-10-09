@@ -5,19 +5,24 @@ import {
 	icons,
 	submitHandler,
 	createLabeledTextarea,
-	SwitchButtonView
+	SwitchButtonView,
+	createLabeledInputText
 } from 'ckeditor5';
 
 export default class YouubeEmbedFormView extends View {
 	constructor(locale) {
 		super(locale);
 
-		this.iframeInputView = this._createInput('Iframe HTML');
+		this.iframeInputView = this._createTextAreaInput('Iframe HTML', 'iframe-code-input');
 
-		this.youtubeUrl = this._createInput('Paste YouTube Video URL');
-		this.youtubeUrlWidth = this._createInput('Width');
-		this.youtubeUrlHeight = this._createInput('Height');
-		this.youtubeVideoStartAt = this._createInput('Start at');
+		this.youtubeUrl = this._createTextInput(
+			'Paste YouTube Video URL',
+			'youtube-url'
+		);
+		this.youtubeUrlWidth = this._createTextInput('Width', 'youtube-width');
+		this.youtubeUrlHeight = this._createTextInput('Height', 'youtube-height');
+
+		this.youtubeVideoStartAt = this._createTextInput('Start at', 'youtube-start-at');
 		this.showPlayerControls = this._createSwitchButton(
 			'Show player controls',
 			'_showPlayerControls'
@@ -31,18 +36,32 @@ export default class YouubeEmbedFormView extends View {
 			'Use old embed code',
 			'_useOldEmbedCode'
 		);
+		this.enablePrivacyEnhancedMode = this._createSwitchButton(
+			'Enable privacy-enhanced mode',
+			'_enablePrivacyEnhancedMode'
+		);
 		this.showRelatedVideos = this._createSwitchButton(
 			'Show related videos at the end of the video',
 			'_showRelatedVideos'
 		);
 
-		this.checkboxes = [
+		// this.youtubeUrlWidth.fieldView.element.type = 'number';
+		// this.youtubeUrlHeight.fieldView.element.type = 'number';
+
+		this.youtubeUrlAndSizeContainer = this._createViewContainer(
+			'youtube-url-and-size-container',
+			[this.youtubeUrl, this.youtubeUrlWidth, this.youtubeUrlHeight]
+		);
+
+		this.checkboxContainer = this._createViewContainer('youtube-iframe-config-container', [
+			this.youtubeVideoStartAt,
 			this.showPlayerControls,
 			this.videoImgAndLinkOnly,
-			this.autoPlay,
 			this.useOldEmbedCode,
+			this.enablePrivacyEnhancedMode,
+			this.autoPlay,
 			this.showRelatedVideos
-		];
+		]);
 
 		this.iframeInputView.on('change', () => {});
 
@@ -65,19 +84,17 @@ export default class YouubeEmbedFormView extends View {
 		// Delegate ButtonView#execute to FormView#cancel.
 		this.cancelButtonView.delegate('execute').to(this, 'cancel');
 
+		this.controlBtnContainer = this._createViewContainer(
+			'control-btn-container',
+			[this.saveButtonView, this.cancelButtonView]
+		);
+
 		this.childViews = this.createCollection([
 			this.iframeInputView,
-			this.youtubeUrl,
-			this.youtubeUrlWidth,
-			this.youtubeUrlHeight,
-			this.youtubeVideoStartAt,
-			this.showPlayerControls,
-			this.videoImgAndLinkOnly,
-			this.autoPlay,
-			this.useOldEmbedCode,
-			this.showRelatedVideos,
-			this.saveButtonView,
-			this.cancelButtonView
+			this.youtubeUrlAndSizeContainer,
+			// this.youtubeVideoStartAt,
+			this.checkboxContainer,
+			this.controlBtnContainer
 		]);
 
 		this.setTemplate({
@@ -104,13 +121,32 @@ export default class YouubeEmbedFormView extends View {
 		this.childViews.first.focus();
 	}
 
-	_createInput(label) {
+	_createTextAreaInput(label, className = '') {
 		const labeledInput = new LabeledFieldView(
 			this.locale,
 			createLabeledTextarea
 		);
 
 		labeledInput.label = label;
+
+		if (className) {
+			labeledInput.class = className;
+		}
+
+		return labeledInput;
+	}
+
+	_createTextInput(label, className = '') {
+		const labeledInput = new LabeledFieldView(
+			this.locale,
+			createLabeledInputText
+		);
+
+		labeledInput.label = label;
+
+		if (className) {
+			labeledInput.class = className;
+		}
 
 		return labeledInput;
 	}
@@ -150,5 +186,25 @@ export default class YouubeEmbedFormView extends View {
 		});
 
 		return switchButton;
+	}
+
+	_createViewContainer(className, children) {
+		const container = new View();
+		let classes = [];
+		if (typeof className === 'string') {
+			classes = className.split(' ');
+		} else if (Array.isArray(className)) {
+			classes = className;
+		}
+
+		container.setTemplate({
+			tag: 'div',
+			attributes: {
+				class: classes
+			},
+			children
+		});
+
+		return container;
 	}
 }
