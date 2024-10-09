@@ -8,12 +8,16 @@ import {
 	SwitchButtonView,
 	createLabeledInputText
 } from 'ckeditor5';
+import { secondsToHms, ytVidId, ytVidTime } from './utils/youtube/utils.js';
 
 export default class YouubeEmbedFormView extends View {
 	constructor(locale) {
 		super(locale);
 
-		this.iframeInputView = this._createTextAreaInput('Iframe HTML', 'iframe-code-input');
+		this.iframeInputView = this._createTextAreaInput(
+			'Iframe HTML',
+			'iframe-code-input'
+		);
 
 		this.youtubeUrl = this._createTextInput(
 			'Paste YouTube Video URL',
@@ -22,7 +26,10 @@ export default class YouubeEmbedFormView extends View {
 		this.youtubeUrlWidth = this._createTextInput('Width', 'youtube-width');
 		this.youtubeUrlHeight = this._createTextInput('Height', 'youtube-height');
 
-		this.youtubeVideoStartAt = this._createTextInput('Start at', 'youtube-start-at');
+		this.youtubeVideoStartAt = this._createTextInput(
+			'Start at',
+			'youtube-start-at'
+		);
 		this.showPlayerControls = this._createSwitchButton(
 			'Show player controls',
 			'_showPlayerControls'
@@ -53,15 +60,39 @@ export default class YouubeEmbedFormView extends View {
 			[this.youtubeUrl, this.youtubeUrlWidth, this.youtubeUrlHeight]
 		);
 
-		this.checkboxContainer = this._createViewContainer('youtube-iframe-config-container', [
-			this.youtubeVideoStartAt,
-			this.showPlayerControls,
-			this.videoImgAndLinkOnly,
-			this.useOldEmbedCode,
-			this.enablePrivacyEnhancedMode,
-			this.autoPlay,
-			this.showRelatedVideos
-		]);
+		// Add onchange event listener to youtubeUrl
+		this.youtubeUrl.on('change', () => {
+			const youtubeUrlValue = this.youtubeUrl.fieldView.element.value;
+			const video = ytVidId(youtubeUrlValue);
+			const time = ytVidTime(youtubeUrlValue);
+
+			if (video && time) {
+				const hms = secondsToHms(time);
+
+				this.youtubeVideoStartAt.fieldView.element.value = hms;
+			}
+
+			// Trigger the input event to ensure the label moves to the top
+			// eslint-disable-next-line no-undef
+			const event = new Event('input', {
+				bubbles: true,
+				cancelable: true
+			});
+			this.youtubeVideoStartAt.fieldView.element.dispatchEvent(event);
+		});
+
+		this.checkboxContainer = this._createViewContainer(
+			'youtube-iframe-config-container',
+			[
+				this.youtubeVideoStartAt,
+				this.showPlayerControls,
+				this.videoImgAndLinkOnly,
+				this.useOldEmbedCode,
+				this.enablePrivacyEnhancedMode,
+				this.autoPlay,
+				this.showRelatedVideos
+			]
+		);
 
 		this.iframeInputView.on('change', () => {});
 

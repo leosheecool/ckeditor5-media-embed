@@ -1,4 +1,4 @@
-import { ALLOWED_SOCIAL_MEDIAS } from './constants.js';
+import { ALLOWED_SOCIAL_MEDIAS } from '../constants.js';
 
 const youtubeEmbedValidation = embedCode => {
 	const socialMedia = ALLOWED_SOCIAL_MEDIAS.find(regex => {

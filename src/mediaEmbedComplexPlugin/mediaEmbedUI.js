@@ -9,7 +9,7 @@ import FormView from './mediaEmbedView.js';
 import YouubeEmbedFormView from './youtubeEmbedView.js';
 
 import mediaEmbedValidation from './utils/mediaEmbedValidation.js';
-import youtubeEmbedValidation from './utils/youtubeEmbedValidation.js';
+import youtubeEmbedValidation from './utils/youtube/youtubeEmbedValidation.js';
 
 import embedIcon from './icons/embed-icon.svg';
 import youtubeIcon from './icons/youtube-icon.svg';
