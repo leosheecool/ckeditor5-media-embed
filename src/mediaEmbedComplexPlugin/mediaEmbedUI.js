@@ -7,6 +7,7 @@ import {
 import FormView from './mediaEmbedView.js';
 import './styles/styles.css';
 import mediaEmbedValidation from './utils/mediaEmbedValidation.js';
+import embedIcon from './icons/embed-icon.svg';
 
 export default class MediaEmbedUI extends Plugin {
 	static get requires() {
@@ -24,9 +25,10 @@ export default class MediaEmbedUI extends Plugin {
 		editor.ui.componentFactory.add('EPPmediaEmbedButton', () => {
 			const button = new ButtonView();
 
-			button.label = 'Media embed 2';
+			button.label = 'Media embed';
 			button.tooltip = true;
 			button.withText = true;
+			button.icon = embedIcon;
 
 			this.listenTo(button, 'execute', () => {
 				this._showUI();

@@ -6,6 +6,7 @@ import {
 } from 'ckeditor5';
 import './styles/styles.css';
 import FormView from './EPPCopyCitationView.js';
+import quotationIcon from './icons/quotation-marks.svg';
 
 export default class EPPCopyCitationUI extends Plugin {
 	static get requires() {
@@ -24,6 +25,7 @@ export default class EPPCopyCitationUI extends Plugin {
 			button.label = 'Citation';
 			button.tooltip = true;
 			button.withText = true;
+			button.icon = quotationIcon;
 
 			// if no selection, disable the button but keep the cursor
 
