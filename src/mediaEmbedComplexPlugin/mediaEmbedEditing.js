@@ -9,7 +9,7 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 		const editor = this.editor;
 		const schema = editor.model.schema;
 		schema.extend('rawHtml', {
-			allowAttributes: ['value', 'socialMedia']
+			allowAttributes: ['value', 'socialMedia', 'isYoutubeEmbed']
 		});
 		// this._setupConversion();
 	}
