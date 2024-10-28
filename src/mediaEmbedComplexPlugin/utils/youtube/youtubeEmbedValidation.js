@@ -45,15 +45,8 @@ const validateYoutubeStartAt = string => {
 	}
 };
 
-// const validateYoutubeUrl = url => {
-// 	const p = /t=([0-9hms]+)/;
-// 	return url.match(p) ? RegExp.$1 : false;
-// };
-
 export const validateYoutubeFormFields = fields => {
 	let isValid = true;
-
-	// console.log(fields.enablePrivacyEnhancedMode);
 
 	const validators = [
 		{
@@ -84,19 +77,6 @@ export const validateYoutubeFormFields = fields => {
 			field.errorText = error.message;
 		}
 	});
-
-	// validateYoutubeUrl(fields.youtubeUrl.fieldView.element.value?.trim());
-	// validateYoutubeInt(
-	// 	fields.youtubeUrlHeight.fieldView.element.value?.trim(),
-	// 	'Height'
-	// );
-	// validateYoutubeInt(
-	// 	fields.youtubeUrlWidth.fieldView.element.value?.trim(),
-	// 	'Width'
-	// );
-	// validateYoutubeStartAt(
-	// 	fields.youtubeVideoStartAt.fieldView.element.value?.trim()
-	// );
 	return isValid;
 };
 

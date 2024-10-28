@@ -17,6 +17,7 @@ import embedIcon from './icons/embed-icon.svg';
 import youtubeIcon from './icons/youtube-icon.svg';
 
 import './styles/styles.css';
+import { createYoutubeEmbedUrl } from './utils/youtube/utils.js';
 
 export default class MediaEmbedUI extends Plugin {
 	static get requires() {
@@ -134,8 +135,12 @@ export default class MediaEmbedUI extends Plugin {
 			if (!socialMedia) {
 				const fields = formView.getAllFields();
 				const isValid = validateYoutubeFormFields(fields);
+				if (!isValid) {
+					return;
+				}
+				const embedUrl = createYoutubeEmbedUrl(fields);
 				// console.log('isValid', isValid);
-				return isValid;
+				return embedUrl;
 			}
 
 			// editor.model.change(writer => {
