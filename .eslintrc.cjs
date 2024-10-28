@@ -34,20 +34,29 @@ module.exports = {
 			}
 		},
 		{
-			files: ['src/**/*.js'],
+			files: ['*.js', 'src/**/*.js', '*.cjs'],
 			rules: {
 				// Allow usage of `console.log` in source files.
-				'no-console': 'off'
-			}
-		},
-		{
-			files: ['*.js'],
-			rules: {
+				'no-console': 'off',
 				'ckeditor5-rules/ckeditor-imports': 'off',
 				'space-before-function-paren': 'off',
 				'space-in-parens': 'off',
-				'array-bracket-spacing': 'off'
+				'array-bracket-spacing': 'off',
+				'object-curly-spacing': 'off',
+				'template-curly-spacing': 'off',
+				'operator-linebreak': 'off',
+				'computed-property-spacing': 'off'
 			}
 		}
+		// {
+		// 	files: ['*.js'],
+		// 	rules: {
+		// 		'ckeditor5-rules/ckeditor-imports': 'off',
+		// 		'space-before-function-paren': 'off',
+		// 		'space-in-parens': 'off',
+		// 		'array-bracket-spacing': 'off',
+		// 		'object-curly-spacing': 'off'
+		// 	}
+		// }
 	]
 };

@@ -9,7 +9,9 @@ import FormView from './mediaEmbedView.js';
 import YouubeEmbedFormView from './youtubeEmbedView.js';
 
 import mediaEmbedValidation from './utils/mediaEmbedValidation.js';
-import youtubeEmbedValidation from './utils/youtube/youtubeEmbedValidation.js';
+import youtubeEmbedValidation, {
+	validateYoutubeFormFields
+} from './utils/youtube/youtubeEmbedValidation.js';
 
 import embedIcon from './icons/embed-icon.svg';
 import youtubeIcon from './icons/youtube-icon.svg';
@@ -104,23 +106,46 @@ export default class MediaEmbedUI extends Plugin {
 		const editor = this.editor;
 		const formView = new YouubeEmbedFormView(editor.locale);
 
+		this.listenTo(formView, 'YTIframeInputchange', () => {
+			const iframe = formView.iframeInputView.fieldView.element.value?.trim();
+			const fields = formView.getAllFieldsInArray();
+
+			if (!iframe) {
+				if (!formView.getIsIframe()) {
+					return;
+				}
+
+				fields.forEach(field => (field.view.isEnabled = true));
+				formView.setIsIframe(false);
+				return;
+			}
+
+			fields.forEach(field => {
+				field.view.isEnabled = field.name === 'iframeInput';
+			});
+			formView.setIsIframe(true);
+		});
+
 		this.listenTo(formView, 'submit', () => {
+			// console.log('iframeInputView', formView);
 			const iframe = formView.iframeInputView.fieldView.element.value?.trim();
 			const socialMedia = youtubeEmbedValidation(iframe);
 
 			if (!socialMedia) {
-				formView.iframeInputView.errorText = 'Invalid embed code';
-				return;
+				const fields = formView.getAllFields();
+				const isValid = validateYoutubeFormFields(fields);
+				// console.log('isValid', isValid);
+				return isValid;
 			}
 
-			editor.model.change(writer => {
-				const container = writer.createElement('rawHtml', {
-					value: iframe,
-					socialMedia,
-					isYoutubeEmbed: true
-				});
-				editor.model.insertContent(container);
-			});
+			// editor.model.change(writer => {
+			// 	const container = writer.createElement('rawHtml', {
+			// 		value: iframe,
+			// 		// socialMedia,
+			// 		isYoutubeEmbed: true
+			// 	});
+			// 	editor.model.insertContent(container);
+			// });
 
 			this._hideUI('Youtube');
 		});

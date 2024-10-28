@@ -75,3 +75,27 @@ export const secondsToTimeParam = seconds => {
 
 	return param;
 };
+
+/**
+ * createYoutubeEmbedCode
+ */
+export const createYoutubeEmbedCode = fields => {
+	if (fields.iframeInputView.fieldView.element.value) {
+		return fields.iframeInputView.fieldView.element.value;
+	}
+
+	// const url = `https://${
+	// 	fields.enablePrivacyEnhancedMode.isOn
+	// 		? 'www.youtube-nocookie.com'
+	// 		: 'www.youtube.com'
+	// }/embed/${ytVidId(fields.youtubeUrl.fieldView.element.value)}?${
+	// 	fields.showRelatedVideos.isOn ? 'rel=1' : 'rel=0'
+	// }&${fields.autoPlay.isOn ? 'autoplay=1' : 'autoplay=0'}&${
+	// 	fields.showPlayerControls.isOn ? 'controls=1' : 'controls=0'
+	// }&${
+	// 	fields.youtubeVideoStartAt.fieldView.element.value
+	// 		? 'start=' +
+	// 		  hmsToSeconds(fields.youtubeVideoStartAt.fieldView.element.value)
+	// 		: ''
+	// }$`;
+};

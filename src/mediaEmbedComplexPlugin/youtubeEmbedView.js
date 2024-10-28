@@ -13,6 +13,7 @@ import { secondsToHms, ytVidId, ytVidTime } from './utils/youtube/utils.js';
 export default class YouubeEmbedFormView extends View {
 	constructor(locale) {
 		super(locale);
+		this.isIframe = false;
 
 		this.iframeInputView = this._createTextAreaInput(
 			'Iframe HTML',
@@ -94,7 +95,9 @@ export default class YouubeEmbedFormView extends View {
 			]
 		);
 
-		this.iframeInputView.on('change', () => {});
+		this.iframeInputView.on('change', () => {
+			this.fire('YTIframeInputchange');
+		});
 
 		// Create the save and cancel buttons.
 		this.saveButtonView = this._createButton(
@@ -199,7 +202,7 @@ export default class YouubeEmbedFormView extends View {
 		const t = this.locale.t;
 		const switchButton = new SwitchButtonView(this.locale);
 
-		if (typeof this[ id ] === 'undefined') {
+		if (typeof this[id] === 'undefined') {
 			this.set(id, false);
 		}
 
@@ -213,7 +216,7 @@ export default class YouubeEmbedFormView extends View {
 		switchButton.bind('isOn').to(this, id);
 		// // Update the state of the form when a switch is toggled.
 		switchButton.on('execute', () => {
-			this.set(id, !this[ id ]);
+			this.set(id, !this[id]);
 		});
 
 		return switchButton;
@@ -237,5 +240,78 @@ export default class YouubeEmbedFormView extends View {
 		});
 
 		return container;
+	}
+
+	getIsIframe() {
+		return this.isIframe;
+	}
+
+	setIsIframe(isIframe) {
+		this.isIframe = isIframe;
+	}
+
+	getAllFields() {
+		return {
+			iframeInput: this.iframeInputView,
+			youtubeUrl: this.youtubeUrl,
+			youtubeUrlWidth: this.youtubeUrlWidth,
+			youtubeUrlHeight: this.youtubeUrlHeight,
+			youtubeVideoStartAt: this.youtubeVideoStartAt,
+			showPlayerControls: this.showPlayerControls,
+			videoImgAndLinkOnly: this.videoImgAndLinkOnly,
+			autoPlay: this.autoPlay,
+			useOldEmbedCode: this.useOldEmbedCode,
+			enablePrivacyEnhancedMode: this.enablePrivacyEnhancedMode,
+			showRelatedVideos: this.showRelatedVideos
+		};
+	}
+
+	getAllFieldsInArray() {
+		return [
+			{
+				name: 'iframeInput',
+				view: this.iframeInputView
+			},
+			{
+				name: 'youtubeUrl',
+				view: this.youtubeUrl
+			},
+			{
+				name: 'youtubeUrlWidth',
+				view: this.youtubeUrlWidth
+			},
+			{
+				name: 'youtubeUrlHeight',
+				view: this.youtubeUrlHeight
+			},
+			{
+				name: 'youtubeVideoStartAt',
+				view: this.youtubeVideoStartAt
+			},
+			{
+				name: 'showPlayerControls',
+				view: this.showPlayerControls
+			},
+			{
+				name: 'videoImgAndLinkOnly',
+				view: this.videoImgAndLinkOnly
+			},
+			{
+				name: 'autoPlay',
+				view: this.autoPlay
+			},
+			{
+				name: 'useOldEmbedCode',
+				view: this.useOldEmbedCode
+			},
+			{
+				name: 'enablePrivacyEnhancedMode',
+				view: this.enablePrivacyEnhancedMode
+			},
+			{
+				name: 'showRelatedVideos',
+				view: this.showRelatedVideos
+			}
+		];
 	}
 }
