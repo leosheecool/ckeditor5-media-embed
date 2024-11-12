@@ -4,13 +4,20 @@ export const youtubeEmbedValidation = embedCode => {
 	const socialMedia = ALLOWED_SOCIAL_MEDIAS.find(regex => {
 		return regex.name === 'youtube';
 	});
-	const isRegex = socialMedia.regex.test(embedCode);
+	socialMedia.isRegex = false;
 
 	if (!socialMedia) {
 		return false;
 	}
-	if (!isRegex) {
+
+	if (!embedCode) {
 		return socialMedia;
+	}
+
+	const isCorrectRegex = socialMedia.regex.test(embedCode);
+
+	if (!isCorrectRegex) {
+		return false;
 	}
 	socialMedia.isRegex = true;
 	return socialMedia;

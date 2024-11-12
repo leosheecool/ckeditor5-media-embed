@@ -27,7 +27,7 @@ export const ALLOWED_SOCIAL_MEDIAS = [
 	{
 		name: 'youtube',
 		regex:
-			/^<iframe.*src="https:\/\/(www\.)?youtube.com\/embed\/.*".*><\/iframe>/,
+			/^<iframe.*src="https:\/\/(www\.)?youtube.com\/embed\/.*".*><\/iframe>$/,
 		vendorId: 'c:youtube',
 		missingConsentText:
 			`This video was blocked because of your cookies settings.

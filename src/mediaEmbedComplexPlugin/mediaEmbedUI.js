@@ -131,7 +131,7 @@ export default class MediaEmbedUI extends Plugin {
 			const iframe = formView.iframeInputView.fieldView.element.value?.trim();
 			const socialMedia = youtubeEmbedValidation(iframe);
 
-			if (!socialMedia) {
+			if (!socialMedia || (socialMedia.isRegex && !iframe)) {
 				formView.iframeInputView.errorText = 'Invalid embed code';
 				return;
 			}
@@ -184,7 +184,6 @@ export default class MediaEmbedUI extends Plugin {
 	}
 
 	_getBalloonPositionData() {
-		// console.log('MediaEmbedUI#_getBalloonPositionData() got called');
 		const view = this.editor.editing.view;
 		const viewDocument = view.document;
 		let target = null;

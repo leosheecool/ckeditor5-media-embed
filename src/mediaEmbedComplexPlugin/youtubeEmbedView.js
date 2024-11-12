@@ -220,7 +220,6 @@ export default class YouubeEmbedFormView extends View {
 		switchButton.class = 'test-switch-' + id;
 		// Let the switch be controlled by form's observable property.
 		switchButton.bind('isOn').to(this, id);
-		// // Update the state of the form when a switch is toggled.
 		switchButton.on('execute', () => {
 			this.set(id, !this[id]);
 		});
@@ -334,7 +333,8 @@ export default class YouubeEmbedFormView extends View {
 			if (field.view.fieldView.element.defaultValue) {
 				field.view.fieldView.value = field.view.fieldView.element.defaultValue;
 			} else {
-				field.view.fieldView.value = '';
+				field.view.fieldView.value = undefined;
+				field.view.fieldView.isEmpty = true;
 			}
 		});
 
