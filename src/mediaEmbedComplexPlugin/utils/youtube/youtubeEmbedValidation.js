@@ -12,7 +12,7 @@ export const youtubeEmbedValidation = embedCode => {
 	if (!isRegex) {
 		return socialMedia;
 	}
-	socialMedia.isRegex = false;
+	socialMedia.isRegex = true;
 	return socialMedia;
 };
 

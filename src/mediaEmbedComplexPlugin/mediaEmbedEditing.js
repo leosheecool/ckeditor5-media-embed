@@ -1,5 +1,6 @@
 import { createElement, HtmlEmbedEditing, toWidget } from 'ckeditor5';
 import { getCustomIframeElementString } from './utils/utils.js';
+import { getCustomYoutubeOldIframe } from './utils/youtube/utils.js';
 
 export default class MediaEmbedEditing extends HtmlEmbedEditing {
 	localInit() {
@@ -58,17 +59,23 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 			model: 'rawHtml',
 			view: (modelElement, { writer }) => {
 				const socialMedia = modelElement.getAttribute('socialMedia');
-				const customIframeProperties = modelElement.getAttribute('customIframeProperties');
+				const customIframeProperties = modelElement.getAttribute(
+					'customIframeProperties'
+				);
 
-				const definitionContainer = writer.createRawElement('script', {
-					'cald-gdpr': 'definition',
-					'type': 'text/plain'
-				}, element => {
-					element.innerHTML = JSON.stringify({
-						vendor_id: socialMedia.vendorId,
-						tag: 'div'
-					});
-				});
+				const definitionContainer = writer.createRawElement(
+					'script',
+					{
+						'cald-gdpr': 'definition',
+						type: 'text/plain'
+					},
+					element => {
+						element.innerHTML = JSON.stringify({
+							vendor_id: socialMedia.vendorId,
+							tag: 'div'
+						});
+					}
+				);
 
 				// Consent part
 				let iframeContainer;
@@ -77,7 +84,9 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 						'div',
 						{ class: socialMedia.classes },
 						function (domElement) {
-							domElement.innerHTML = getCustomIframeElementString(customIframeProperties);
+							domElement.innerHTML = customIframeProperties.isOldIframe
+								? getCustomYoutubeOldIframe(customIframeProperties)
+								: getCustomIframeElementString(customIframeProperties);
 						}
 					);
 				} else {
@@ -85,17 +94,23 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 						'div',
 						{ class: socialMedia.classes },
 						function (domElement) {
-							domElement.innerHTML = modelElement.getAttribute('value')
-								.replace('<script', '<custom_script')
-								.replace('</script>', '</custom_script>') || '';
+							domElement.innerHTML =
+								modelElement
+									.getAttribute('value')
+									.replace('<script', '<custom_script')
+									.replace('</script>', '</custom_script>') || '';
 						}
 					);
 				}
-				const consentContainer = writer.createContainerElement('script', {
-					'cald-gdpr': 'consent',
-					type: 'text/plain',
-					class: 'consent-content'
-				}, [iframeContainer]);
+				const consentContainer = writer.createContainerElement(
+					'script',
+					{
+						'cald-gdpr': 'consent',
+						type: 'text/plain',
+						class: 'consent-content'
+					},
+					[iframeContainer]
+				);
 
 				// No Consent part
 				const placeholderImage = writer.createEmptyElement('img', {
@@ -105,42 +120,65 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 					style: 'width: 100%; height: 56.15%'
 				});
 
-				const noConsentOverlay = writer.createContainerElement('div', {
-					class: 'no-consent-overlay'
-				}, [
-					writer.createContainerElement('div', {
-						class: 'overlay-wrapper'
-					}, [
-						writer.createRawElement('p', {}, e => { e.innerHTML = socialMedia.missingConsentText; }),
-						writer.createContainerElement('div', {
-							class: 'no-consent-link-to-cmp'
-						}, [
-							writer.createRawElement('a', {
-								href: '#',
-								class: 'epp-prevent-link link-to-cmp btn-solid-md'
-							}, element => {
-								element.innerHTML = 'Change my consent settings';
-							})
-						])
-					])
-				]);
+				const noConsentOverlay = writer.createContainerElement(
+					'div',
+					{
+						class: 'no-consent-overlay'
+					},
+					[
+						writer.createContainerElement(
+							'div',
+							{
+								class: 'overlay-wrapper'
+							},
+							[
+								writer.createRawElement('p', {}, e => {
+									e.innerHTML = socialMedia.missingConsentText;
+								}),
+								writer.createContainerElement(
+									'div',
+									{
+										class: 'no-consent-link-to-cmp'
+									},
+									[
+										writer.createRawElement(
+											'a',
+											{
+												href: '#',
+												class: 'epp-prevent-link link-to-cmp btn-solid-md'
+											},
+											element => {
+												element.innerHTML = 'Change my consent settings';
+											}
+										)
+									]
+								)
+							]
+						)
+					]
+				);
 
-				const noConsentContainer = writer.createContainerElement('script', {
-					'cald-gdpr': 'no-consent',
-					type: 'text/plain'
-				}, [
-					placeholderImage,
-					noConsentOverlay
-				]);
+				const noConsentContainer = writer.createContainerElement(
+					'script',
+					{
+						'cald-gdpr': 'no-consent',
+						type: 'text/plain'
+					},
+					[placeholderImage, noConsentOverlay]
+				);
 
-				const container = writer.createContainerElement('div', {
-					class: 'cald_consent_wrapper'
-				}, [
-					// iframeContainer,
-					definitionContainer,
-					consentContainer,
-					noConsentContainer
-				]);
+				const container = writer.createContainerElement(
+					'div',
+					{
+						class: 'cald_consent_wrapper'
+					},
+					[
+						// iframeContainer,
+						definitionContainer,
+						consentContainer,
+						noConsentContainer
+					]
+				);
 				return container;
 			}
 		});
@@ -151,7 +189,9 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 				let domContentWrapper;
 				let state;
 				let props;
-				const customIframeProperties = modelElement.getAttribute('customIframeProperties');
+				const customIframeProperties = modelElement.getAttribute(
+					'customIframeProperties'
+				);
 				const viewContentWrapper = writer.createRawElement(
 					'div',
 					{
@@ -188,7 +228,9 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 					isEditable: false,
 					getRawHtmlValue: () => {
 						if (customIframeProperties) {
-							return getCustomIframeElementString(customIframeProperties);
+							return customIframeProperties.isOldIframe
+								? getCustomYoutubeOldIframe(customIframeProperties)
+								: getCustomIframeElementString(customIframeProperties);
 						}
 						return modelElement.getAttribute('value') ?? '';
 					}
@@ -234,9 +276,9 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 		function createPreviewContainer({ editor, domDocument, state, props }) {
 			const sanitizedOutput = props.sanitizeHtml(state.getRawHtmlValue());
 			const placeholderText =
-				state.getRawHtmlValue().length > 0 ?
-					t('No preview available') :
-					t('Empty snippet content');
+				state.getRawHtmlValue().length > 0
+					? t('No preview available')
+					: t('Empty snippet content');
 			const domPreviewPlaceholder = createElement(
 				domDocument,
 				'div',

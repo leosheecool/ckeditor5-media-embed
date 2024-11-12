@@ -96,7 +96,7 @@ export const createYoutubeEmbedUrl = fields => {
 	}${
 		fields.youtubeVideoStartAt.fieldView.element.value
 			? '&start=' +
-				hmsToSeconds(fields.youtubeVideoStartAt.fieldView.element.value)
+			hmsToSeconds(fields.youtubeVideoStartAt.fieldView.element.value)
 			: ''
 	}`;
 };
@@ -117,8 +117,30 @@ export const createYoutubeIframeProperties = fields => {
 			'gyroscope',
 			'picture-in-picture',
 			'web-share'
-		]
+		],
+		isOldIframe: fields.useOldEmbedCode.isOn
 	};
 
 	return iframeProperties;
+};
+
+export const getCustomYoutubeOldIframe = customIframeProperties => {
+	const objectUrl = `${customIframeProperties.src.replace('embed/', 'v/')}${
+		customIframeProperties.src.includes('?') ? '&' : '?'
+	}hl=en&version=3`;
+	return `<object
+						width="${customIframeProperties.width ?? 600}"
+						height="${customIframeProperties.height ?? 400}">
+						<param name="movie" value="${objectUrl}"></param>
+						<param name="allowFullScreen" value="true"></param>
+						<param name="allowscriptaccess" value="always"></param>
+						<embed
+							src="${objectUrl}"
+							type="application/x-shockwave-flash"
+							allowscriptaccess="always"
+							allowfullscreen="true"
+							width="${customIframeProperties.width ?? 600}"
+							height="${customIframeProperties.height ?? 400}">
+						</embed>
+					</object>`;
 };

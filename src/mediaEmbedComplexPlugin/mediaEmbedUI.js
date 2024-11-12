@@ -128,7 +128,6 @@ export default class MediaEmbedUI extends Plugin {
 		});
 
 		this.listenTo(formView, 'submit', () => {
-			// console.log('iframeInputView', formView);
 			const iframe = formView.iframeInputView.fieldView.element.value?.trim();
 			const socialMedia = youtubeEmbedValidation(iframe);
 
