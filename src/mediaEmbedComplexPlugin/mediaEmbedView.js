@@ -85,4 +85,28 @@ export default class FormView extends View {
 
 		return button;
 	}
+
+	getAllFields() {
+		return {
+			iframe: this.iframeInputView.fieldView.element.value
+		};
+	}
+
+	getAllFieldsInArray() {
+		return [
+			{
+				name: 'iframe',
+				view: this.iframeInputView.fieldView.element.value
+			}
+		];
+	}
+
+	resetFields() {
+		// Reset the text fields.
+		this.getAllFieldsInArray().forEach(field => {
+			if (!field.view.fieldView)
+			{ return; }
+			field.view.fieldView.value = '';
+		});
+	}
 }

@@ -24,8 +24,8 @@ export default class YouubeEmbedFormView extends View {
 			'Paste YouTube Video URL',
 			'youtube-url'
 		);
-		this.youtubeUrlWidth = this._createTextInput('Width', 'youtube-width');
-		this.youtubeUrlHeight = this._createTextInput('Height', 'youtube-height');
+		this.youtubeUrlWidth = this._createTextInput('Width', 'youtube-width', '560');
+		this.youtubeUrlHeight = this._createTextInput('Height', 'youtube-height', '315');
 
 		this.youtubeVideoStartAt = this._createTextInput(
 			'Start at',
@@ -170,18 +170,24 @@ export default class YouubeEmbedFormView extends View {
 		return labeledInput;
 	}
 
-	_createTextInput(label, className = '') {
+	_createTextInput(label, className = '', defaultValue = '') {
 		const labeledInput = new LabeledFieldView(
 			this.locale,
 			createLabeledInputText
 		);
 
 		labeledInput.label = label;
+		labeledInput.render();
 
+		if (defaultValue) {
+			labeledInput.fieldView.element.value = defaultValue;
+			labeledInput.fieldView.element.placeholder = defaultValue;
+			labeledInput.fieldView.element.defaultValue = defaultValue;
+			labeledInput.isEmpty = false;
+		}
 		if (className) {
 			labeledInput.class = className;
 		}
-
 		return labeledInput;
 	}
 
@@ -266,6 +272,11 @@ export default class YouubeEmbedFormView extends View {
 		};
 	}
 
+	/**
+	 * Returns an array of all fields in the form.
+	 *
+	 * @returns {Array}
+	 */
 	getAllFieldsInArray() {
 		return [
 			{
@@ -313,5 +324,21 @@ export default class YouubeEmbedFormView extends View {
 				view: this.showRelatedVideos
 			}
 		];
+	}
+
+	resetFields() {
+		// Reset the text fields.
+		this.getAllFieldsInArray().forEach(field => {
+			if (!field.view.fieldView)
+			{ return; }
+			field.view.fieldView.value = '';
+		});
+
+		// Reset the switch buttons.
+		this.showPlayerControls.isOn = false;
+		this.videoImgAndLinkOnly.isOn = false;
+		this.autoPlay.isOn = false;
+		this.useOldEmbedCode.isOn = false;
+		this.enablePrivacyEnhancedMode.isOn = false;
 	}
 }

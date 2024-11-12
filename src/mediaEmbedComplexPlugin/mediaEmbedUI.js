@@ -199,7 +199,6 @@ export default class MediaEmbedUI extends Plugin {
 	}
 
 	_showUI(formType = 'default') {
-		// console.log('MediaEmbedUI#_showUI() got called');
 		if (formType === 'Youtube') {
 			this._balloon.add({
 				view: this.youtubeFormView,
@@ -220,14 +219,12 @@ export default class MediaEmbedUI extends Plugin {
 
 	_hideUI(formType = 'default') {
 		if (formType === 'Youtube') {
-			this.youtubeFormView.iframeInputView.fieldView.value = '';
+			this.youtubeFormView.resetFields();
 			this.youtubeFormView.element.reset();
-
 			this._balloon.remove(this.youtubeFormView);
 		} else {
-			this.formView.iframeInputView.fieldView.value = '';
+			this.formView.resetFields();
 			this.formView.element.reset();
-
 			this._balloon.remove(this.formView);
 		}
 
