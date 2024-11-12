@@ -331,7 +331,11 @@ export default class YouubeEmbedFormView extends View {
 		this.getAllFieldsInArray().forEach(field => {
 			if (!field.view.fieldView)
 			{ return; }
-			field.view.fieldView.value = '';
+			if (field.view.fieldView.element.defaultValue) {
+				field.view.fieldView.value = field.view.fieldView.element.defaultValue;
+			} else {
+				field.view.fieldView.value = '';
+			}
 		});
 
 		// Reset the switch buttons.
