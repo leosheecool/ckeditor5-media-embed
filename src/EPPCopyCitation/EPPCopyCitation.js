@@ -1,11 +1,10 @@
-// abbreviation/abbreviation.js
-
 import EPPCopyCitationEditing from './EPPCopyCitationEditing.js';
 import EPPCopyCitationUI from './EPPCopyCitationUI.js';
+import EPPCopyCitationView from './EPPCopyCitationView.js';
 import { Plugin } from 'ckeditor5';
 
-export default class CustomMediaEmbed extends Plugin {
+export default class CustomCopyCitation extends Plugin {
 	static get requires() {
-		return [EPPCopyCitationEditing, EPPCopyCitationUI];
+		return [EPPCopyCitationEditing, EPPCopyCitationUI, EPPCopyCitationView];
 	}
 }

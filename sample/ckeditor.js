@@ -26,17 +26,13 @@ import {
 	TableToolbar,
 	SourceEditing,
 	GeneralHtmlSupport
-	// HtmlEmbed
-	// ScriptElementSupport
 } from 'ckeditor5';
 
 import 'ckeditor5/ckeditor5.css';
 import {
 	EPPMediaEmbed,
 	EPPCopyCitation
-	// EPPYoutubeEmbed
 } from '../src/index.js';
-// import { EPPYoutubeEmbed, EPPMediaEmbed } from '../src/index.js';
 
 /* global document, window */
 
@@ -44,7 +40,6 @@ ClassicEditor.create(document.querySelector('#editor'), {
 	plugins: [
 		EPPMediaEmbed,
 		EPPCopyCitation,
-		// EPPYoutubeEmbed,
 		Essentials,
 		Autoformat,
 		BlockQuote,
@@ -68,8 +63,6 @@ ClassicEditor.create(document.querySelector('#editor'), {
 		Base64UploadAdapter,
 		SourceEditing,
 		GeneralHtmlSupport
-		// HtmlEmbed
-		// ScriptElementSupport
 	],
 	toolbar: [
 		'undo',
@@ -123,9 +116,6 @@ ClassicEditor.create(document.querySelector('#editor'), {
 			}
 		]
 	}
-	// htmlEmbed: {
-	// 	showPreviews: true
-	// }
 })
 	.then(editor => {
 		window.editor = editor;
@@ -142,7 +132,6 @@ ClassicEditor.create(document.querySelector('#editor'), {
 			a.download = 'contenu.html';
 			a.click();
 
-			// Libérer l'URL après téléchargement
 			URL.revokeObjectURL(url);
 		});
 
