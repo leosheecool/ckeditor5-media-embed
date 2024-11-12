@@ -100,3 +100,25 @@ export const createYoutubeEmbedUrl = fields => {
 			: ''
 	}`;
 };
+
+export const createYoutubeIframeProperties = fields => {
+	const iframeProperties = {
+		width: fields.youtubeUrlWidth.fieldView.element.value,
+		height: fields.youtubeUrlHeight.fieldView.element.value,
+		allowfullscreen: true,
+		frameborder: 0,
+		src: createYoutubeEmbedUrl(fields),
+		title: 'YouTube video player',
+		allow: [
+			'accelerometer',
+			'autoplay',
+			'clipboard-write',
+			'encrypted-media',
+			'gyroscope',
+			'picture-in-picture',
+			'web-share'
+		]
+	};
+
+	return iframeProperties;
+};

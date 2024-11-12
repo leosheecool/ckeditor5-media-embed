@@ -2,12 +2,17 @@ import { ALLOWED_SOCIAL_MEDIAS } from '../constants.js';
 
 export const youtubeEmbedValidation = embedCode => {
 	const socialMedia = ALLOWED_SOCIAL_MEDIAS.find(regex => {
-		return regex.regex.test(embedCode);
+		return regex.name === 'youtube';
 	});
+	const isRegex = socialMedia.regex.test(embedCode);
 
 	if (!socialMedia) {
 		return false;
 	}
+	if (!isRegex) {
+		return socialMedia;
+	}
+	socialMedia.isRegex = false;
 	return socialMedia;
 };
 

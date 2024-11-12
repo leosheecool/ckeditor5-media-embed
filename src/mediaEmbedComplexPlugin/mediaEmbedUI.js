@@ -17,7 +17,7 @@ import embedIcon from './icons/embed-icon.svg';
 import youtubeIcon from './icons/youtube-icon.svg';
 
 import './styles/styles.css';
-import { createYoutubeEmbedUrl } from './utils/youtube/utils.js';
+import { createYoutubeIframeProperties } from './utils/youtube/utils.js';
 
 export default class MediaEmbedUI extends Plugin {
 	static get requires() {
@@ -133,24 +133,37 @@ export default class MediaEmbedUI extends Plugin {
 			const socialMedia = youtubeEmbedValidation(iframe);
 
 			if (!socialMedia) {
+				formView.iframeInputView.errorText = 'Invalid embed code';
+				return;
+			}
+
+			if (!socialMedia.isRegex) {
 				const fields = formView.getAllFields();
 				const isValid = validateYoutubeFormFields(fields);
 				if (!isValid) {
 					return;
 				}
-				const embedUrl = createYoutubeEmbedUrl(fields);
-				// console.log('isValid', isValid);
-				return embedUrl;
+				const iframeProperties = createYoutubeIframeProperties(fields);
+				editor.model.change(writer => {
+					const container = writer.createElement('rawHtml', {
+						value: iframe,
+						socialMedia,
+						customIframeProperties: iframeProperties
+					});
+					editor.model.insertContent(container);
+				});
+
+				this._hideUI('Youtube');
+				return iframeProperties;
 			}
 
-			// editor.model.change(writer => {
-			// 	const container = writer.createElement('rawHtml', {
-			// 		value: iframe,
-			// 		// socialMedia,
-			// 		isYoutubeEmbed: true
-			// 	});
-			// 	editor.model.insertContent(container);
-			// });
+			editor.model.change(writer => {
+				const container = writer.createElement('rawHtml', {
+					value: iframe,
+					socialMedia
+				});
+				editor.model.insertContent(container);
+			});
 
 			this._hideUI('Youtube');
 		});

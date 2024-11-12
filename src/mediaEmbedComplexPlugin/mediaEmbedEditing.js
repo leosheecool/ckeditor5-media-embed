@@ -1,17 +1,13 @@
 import { createElement, HtmlEmbedEditing, toWidget } from 'ckeditor5';
+import { getCustomIframeElementString } from './utils/utils.js';
 
 export default class MediaEmbedEditing extends HtmlEmbedEditing {
-	// init() {
-	// 	this._defineSchema();
-	// 	this._defineConverters();
-	// }
 	localInit() {
 		const editor = this.editor;
 		const schema = editor.model.schema;
 		schema.extend('rawHtml', {
-			allowAttributes: ['value', 'socialMedia', 'isYoutubeEmbed']
+			allowAttributes: ['value', 'socialMedia', 'customIframeProperties']
 		});
-		// this._setupConversion();
 	}
 
 	/**
@@ -62,6 +58,7 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 			model: 'rawHtml',
 			view: (modelElement, { writer }) => {
 				const socialMedia = modelElement.getAttribute('socialMedia');
+				const customIframeProperties = modelElement.getAttribute('customIframeProperties');
 
 				const definitionContainer = writer.createRawElement('script', {
 					'cald-gdpr': 'definition',
@@ -74,15 +71,26 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 				});
 
 				// Consent part
-				const iframeContainer = writer.createRawElement(
-					'div',
-					{ class: socialMedia.classes },
-					function (domElement) {
-						domElement.innerHTML = modelElement.getAttribute('value')
-							.replace('<script', '<custom_script')
-							.replace('</script>', '</custom_script>') || '';
-					}
-				);
+				let iframeContainer;
+				if (customIframeProperties) {
+					iframeContainer = writer.createRawElement(
+						'div',
+						{ class: socialMedia.classes },
+						function (domElement) {
+							domElement.innerHTML = getCustomIframeElementString(customIframeProperties);
+						}
+					);
+				} else {
+					iframeContainer = writer.createRawElement(
+						'div',
+						{ class: socialMedia.classes },
+						function (domElement) {
+							domElement.innerHTML = modelElement.getAttribute('value')
+								.replace('<script', '<custom_script')
+								.replace('</script>', '</custom_script>') || '';
+						}
+					);
+				}
 				const consentContainer = writer.createContainerElement('script', {
 					'cald-gdpr': 'consent',
 					type: 'text/plain',
@@ -143,6 +151,7 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 				let domContentWrapper;
 				let state;
 				let props;
+				const customIframeProperties = modelElement.getAttribute('customIframeProperties');
 				const viewContentWrapper = writer.createRawElement(
 					'div',
 					{
@@ -177,7 +186,12 @@ export default class MediaEmbedEditing extends HtmlEmbedEditing {
 				state = {
 					showPreviews: htmlEmbedConfig.showPreviews,
 					isEditable: false,
-					getRawHtmlValue: () => modelElement.getAttribute('value') || ''
+					getRawHtmlValue: () => {
+						if (customIframeProperties) {
+							return getCustomIframeElementString(customIframeProperties);
+						}
+						return modelElement.getAttribute('value') ?? '';
+					}
 				};
 				props = {
 					sanitizeHtml: htmlEmbedConfig.sanitizeHtml,
