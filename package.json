@@ -1,78 +1,71 @@
 {
-	"name": "@epp/ckeditor5-media-embed",
-	"version": "0.0.1",
-	"description": "A plugin for CKEditor 5.",
-	"keywords": [
-		"ckeditor",
-		"ckeditor5",
-		"ckeditor 5",
-		"ckeditor5-feature",
-		"ckeditor5-plugin",
-		"ckeditor5-package-generator"
-	],
-	"mode": "production",
-	"license": "MIT",
-	"engines": {
-		"node": ">=18.0.0",
-		"npm": ">=5.7.1"
-	},
-	"files": [
-		"dist",
-		"ckeditor5-metadata.json"
-	],
-	"devDependencies": {
-		"@ckeditor/ckeditor5-dev-build-tools": "43.0.0",
-		"@ckeditor/ckeditor5-inspector": ">=4.1.0",
-		"@ckeditor/ckeditor5-package-tools": "^2.1.0",
-		"ckeditor5": "latest",
-		"css-loader": "^7.1.2",
-		"eslint": "^7.32.0",
-		"eslint-config-ckeditor5": ">=7.0.0",
-		"eslint-plugin-ckeditor5-rules": "^8.0.0",
-		"eslint-plugin-mocha": "^10.5.0",
-		"http-server": "^14.1.0",
-		"husky": "^4.2.5",
-		"lint-staged": "^10.2.6",
-		"postcss-import": "^16.1.0",
-		"postcss-loader": "^8.1.1",
-		"raw-loader": "^4.0.2",
-		"stylelint": "^13.13.1",
-		"stylelint-config-ckeditor5": ">=7.0.0",
-		"terser-webpack-plugin": "^5.3.10",
-		"webpack": "^5.97.1"
-	},
-	"peerDependencies": {
-		"ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
-	},
-	"scripts": {
-		"build:dist": "node ./scripts/build-dist.mjs",
-		"build": "webpack",
-		"lint": "eslint \"**/*.js\" --quiet",
-		"start": "ckeditor5-package-tools start",
-		"stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
-		"test": "ckeditor5-package-tools test",
-		"prepare": "yarn run build:dist",
-		"translations:collect": "ckeditor5-package-tools translations:collect",
-		"translations:download": "ckeditor5-package-tools translations:download",
-		"translations:upload": "ckeditor5-package-tools translations:upload"
-	},
-	"lint-staged": {
-		"**/*.js": [
-			"eslint --quiet"
-		],
-		"**/*.css": [
-			"stylelint --quiet --allow-empty-input"
-		]
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"dependencies": {
-		"postcss": "8",
-		"style-loader": "^4.0.0",
-		"upath": "^2.0.1",
-		"webpack-cli": "^5.1.4"
-	}
+  "name": "@epp/ckeditor5-media-embed",
+  "version": "0.0.1",
+  "description": "A plugin for CKEditor 5.",
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "ckeditor 5",
+    "ckeditor5-feature",
+    "ckeditor5-plugin",
+    "ckeditor5-package-generator"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*",
+    "./browser/*": null,
+    "./package.json": "./package.json"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=5.7.1"
+  },
+  "files": [
+    "dist",
+    "ckeditor5-metadata.json"
+  ],
+  "devDependencies": {
+    "@ckeditor/ckeditor5-dev-build-tools": "43.0.0",
+    "@ckeditor/ckeditor5-inspector": ">=4.1.0",
+    "@ckeditor/ckeditor5-package-tools": "^2.1.0",
+    "ckeditor5": "latest",
+    "eslint": "^7.32.0",
+    "eslint-config-ckeditor5": ">=7.0.0",
+    "http-server": "^14.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.6",
+    "stylelint": "^13.13.1",
+    "stylelint-config-ckeditor5": ">=7.0.0"
+  },
+  "peerDependencies": {
+    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
+  },
+  "scripts": {
+    "build:dist": "node ./scripts/build-dist.mjs",
+    "lint": "eslint \"**/*.js\" --quiet",
+    "start": "ckeditor5-package-tools start",
+    "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
+    "test": "ckeditor5-package-tools test",
+    "prepare": "yarn run build:dist",
+    "translations:collect": "ckeditor5-package-tools translations:collect",
+    "translations:download": "ckeditor5-package-tools translations:download",
+    "translations:upload": "ckeditor5-package-tools translations:upload"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --quiet"
+    ],
+    "**/*.css": [
+      "stylelint --quiet --allow-empty-input"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }
