@@ -34,7 +34,7 @@ module.exports = {
 			}
 		},
 		{
-			files: ['*.js', 'src/**/*.js', '*.cjs'],
+			files: ['*.js', 'src/**/*.js', '*.cjs', 'scripts/*.mjs'],
 			rules: {
 				// Allow usage of `console.log` in source files.
 				'no-console': 'off',
