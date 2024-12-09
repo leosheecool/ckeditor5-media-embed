@@ -6,7 +6,7 @@ import {
 } from 'ckeditor5';
 
 import FormView from './mediaEmbedView.js';
-import YouubeEmbedFormView from './youtubeEmbedView.js';
+import YoutubeEmbedFormView from './youtubeEmbedView.js';
 
 import mediaEmbedValidation from './utils/mediaEmbedValidation.js';
 import youtubeEmbedValidation, {
@@ -105,7 +105,7 @@ export default class MediaEmbedUI extends Plugin {
 
 	_createYoutubeFormView() {
 		const editor = this.editor;
-		const formView = new YouubeEmbedFormView(editor.locale);
+		const formView = new YoutubeEmbedFormView(editor.locale);
 
 		this.listenTo(formView, 'YTIframeInputchange', () => {
 			const iframe = formView.iframeInputView.fieldView.element.value?.trim();

@@ -10,7 +10,7 @@ import {
 } from 'ckeditor5';
 import { secondsToHms, ytVidId, ytVidTime } from './utils/youtube/utils.js';
 
-export default class YouubeEmbedFormView extends View {
+export default class YoutubeEmbedFormView extends View {
 	constructor(locale) {
 		super(locale);
 		this.isIframe = false;
@@ -52,9 +52,6 @@ export default class YouubeEmbedFormView extends View {
 			'Show related videos at the end of the video',
 			'_showRelatedVideos'
 		);
-
-		// this.youtubeUrlWidth.fieldView.element.type = 'number';
-		// this.youtubeUrlHeight.fieldView.element.type = 'number';
 
 		this.youtubeUrlAndSizeContainer = this._createViewContainer(
 			'youtube-url-and-size-container',
