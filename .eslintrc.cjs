@@ -7,7 +7,8 @@ module.exports = {
 	root: true,
 	ignorePatterns: [
 		// Ignore the entire `dist/`.
-		'dist/**'
+		'dist/**',
+		'webpack.config.js'
 	],
 	rules: {
 		//  This rule disallows importing from any path other than the package main entrypoint.
